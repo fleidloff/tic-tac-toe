@@ -7,23 +7,67 @@ import { useState } from "react";
 
 const initialState = [null, null, null, null, null, null, null, null, null];
 
+const infinity = true;
+
 export default function TicTacToeGame() {
   const [cells, setCells] = useState<Cell[]>(initialState);
   const [lastElement, setLastElement] = useState("O");
   const [finished, setFinished] = useState(false);
+  const [cellClicks, setCellClicks] = useState<number[]>([]);
 
-  const onCellClick = (cell: number) => {
-    if (finished) {
-      setFinished(false);
-      setCells(initialState);
-      setLastElement("O");
-      return;
-    }
-    if (cells[cell] !== null) return;
-    const newCells = [...cells];
+  const reset = () => {
+    setFinished(false);
+    setCells(initialState);
+    setLastElement("O");
+    setCellClicks([]);
+  };
+
+  const setField = (cell: number) => {
+    const newCells = cleanUpFadingItems(cells);
     const element = lastElement === "X" ? "O" : "X";
     setLastElement(element);
     newCells[cell] = element;
+    return newCells;
+  };
+
+  const cleanUpFadingItems = (cells: Cell[]) => {
+    const newCells = [
+      ...cells.map((cell) => {
+        if (cell?.endsWith("-fade")) return null;
+        return cell;
+      }),
+    ];
+    return newCells;
+  };
+
+  const fadeOldItem = (cell: number, cells: Cell[]) => {
+    const newCellClicks = [...cellClicks, cell];
+    const newCells = [...cells];
+
+    if (newCellClicks.length >= 6) {
+      const oldestIndex = newCellClicks[0];
+      const currentValue = newCells[oldestIndex];
+
+      if (currentValue) {
+        newCells[oldestIndex] = ((currentValue.startsWith("X") ? "X" : "O") +
+          "-fade") as Cell;
+      }
+    }
+
+    setCells(newCells);
+    setCellClicks(newCellClicks.slice(-5));
+
+    return newCells;
+  };
+
+  const onCellClick = (cell: number) => {
+    if (finished) {
+      reset();
+      return;
+    }
+    if (cells[cell] !== null) return;
+
+    const newCells = setField(cell);
 
     const winningRow = checkWinner(newCells);
 
@@ -35,7 +79,12 @@ export default function TicTacToeGame() {
         newCells[index] = (winner + "-blink") as Cell;
       }
     }
-    setCells(newCells);
+
+    if (infinity && !winningRow) {
+      setCells(fadeOldItem(cell, newCells));
+    } else {
+      setCells(newCells);
+    }
   };
 
   return (

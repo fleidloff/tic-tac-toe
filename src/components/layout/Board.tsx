@@ -31,7 +31,8 @@ export default function Board({ cells, onCellClick }: BoardProps) {
               <div
                 className={clsx(
                   "w-full h-full flex items-center justify-center fade-in",
-                  cell.endsWith("-blink") && "blink"
+                  cell.endsWith("-blink") && "blink",
+                  cell.endsWith("-fade") && "fade"
                 )}
               >
                 {cell.startsWith("X") ? <X /> : <O />}
