@@ -1,3 +1,5 @@
+import { toggleFullscreen } from "@/lib/fullscreen";
+
 export default function SettingsPanel({
   settings,
   updateSetting,
@@ -18,6 +20,8 @@ export default function SettingsPanel({
         />
         <span>Infinity Mode</span>
       </label>
+
+      <button onClick={toggleFullscreen}>toggle fullscreen</button>
     </div>
   );
 }
