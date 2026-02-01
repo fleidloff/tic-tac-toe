@@ -1,0 +1,23 @@
+export default function SettingsPanel({
+  settings,
+  updateSetting,
+}: {
+  settings: Settings;
+  updateSetting: (key: keyof Settings, value: any) => void;
+}) {
+  return (
+    <div className="p-4 space-y-2 border rounded bg-black shadow-md text-white">
+      <h2 className="font-bold text-lg">Settings</h2>
+
+      <label className="flex items-center space-x-2">
+        <input
+          type="checkbox"
+          checked={settings.infinityMode}
+          onChange={() => updateSetting("infinityMode", !settings.infinityMode)}
+          className="form-checkbox"
+        />
+        <span>Infinity Mode</span>
+      </label>
+    </div>
+  );
+}

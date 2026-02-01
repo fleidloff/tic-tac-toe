@@ -1,0 +1,3 @@
+type Settings = {
+  infinityMode: boolean;
+};

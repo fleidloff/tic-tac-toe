@@ -2,18 +2,19 @@
 
 import Board from "@/components/layout/Board";
 import GameView from "@/components/layout/GameView";
+import { useSettingsStore } from "@/stores/useSettingsStore";
 import { Cell } from "@/types/Cell";
 import { useState } from "react";
 
 const initialState = [null, null, null, null, null, null, null, null, null];
-
-const infinity = true;
 
 export default function TicTacToeGame() {
   const [cells, setCells] = useState<Cell[]>(initialState);
   const [lastElement, setLastElement] = useState("O");
   const [finished, setFinished] = useState(false);
   const [cellClicks, setCellClicks] = useState<number[]>([]);
+  const { settings } = useSettingsStore();
+  const { infinityMode: infinity } = settings;
 
   const reset = () => {
     setFinished(false);
@@ -78,6 +79,10 @@ export default function TicTacToeGame() {
       for (const index of winningRow) {
         newCells[index] = (winner + "-blink") as Cell;
       }
+    }
+
+    if (newCells.every((item) => item !== null)) {
+      setFinished(true);
     }
 
     if (infinity && !winningRow) {
