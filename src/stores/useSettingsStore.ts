@@ -1,10 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-type Settings = {
-  infinityMode: boolean;
-};
-
 type SettingsState = {
   settings: Settings;
   updateSetting: <K extends keyof Settings>(
@@ -17,7 +13,7 @@ export const useSettingsStore = create<SettingsState>()(
   persist(
     (set) => ({
       settings: {
-        infinityMode: true,
+        classicMode: false,
       },
       updateSetting: (setting, value) =>
         set((state) => ({

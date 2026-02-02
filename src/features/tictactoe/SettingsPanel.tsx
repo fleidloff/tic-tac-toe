@@ -14,11 +14,11 @@ export default function SettingsPanel({
       <label className="flex items-center space-x-2">
         <input
           type="checkbox"
-          checked={settings.infinityMode}
-          onChange={() => updateSetting("infinityMode", !settings.infinityMode)}
+          checked={settings.classicMode}
+          onChange={() => updateSetting("classicMode", !settings.classicMode)}
           className="form-checkbox"
         />
-        <span>Infinity Mode</span>
+        <span>Classic Mode</span>
       </label>
 
       <button onClick={toggleFullscreen}>toggle fullscreen</button>

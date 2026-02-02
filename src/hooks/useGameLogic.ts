@@ -16,7 +16,7 @@ export default function useGameLogic() {
   const [finished, setFinished] = useState(false);
   const [cellClicks, setCellClicks] = useState<number[]>([]);
   const { settings } = useSettingsStore();
-  const { infinityMode: infinity } = settings;
+  const { classicMode } = settings;
 
   const onCellClick = (cell: number) => {
     if (finished) {
@@ -38,7 +38,9 @@ export default function useGameLogic() {
       setFinished(true);
     }
 
-    if (infinity && !winningRow) {
+    if (classicMode || winningRow) {
+      setCells(newCells);
+    } else {
       const { newCells: fadedCells, newCellClicks } = fadeOldItem(
         cell,
         newCells,
@@ -46,8 +48,6 @@ export default function useGameLogic() {
       );
       setCellClicks(newCellClicks);
       setCells(fadedCells);
-    } else {
-      setCells(newCells);
     }
   };
 

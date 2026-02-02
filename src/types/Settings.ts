@@ -1,3 +1,3 @@
 type Settings = {
-  infinityMode: boolean;
+  classicMode: boolean;
 };
